@@ -3,7 +3,6 @@
 import roslib, rospy
 rospy.init_node('richfox')
 
-#from arm_controller import * # arm_controller, left_arm_controller, right_arm_controller
 import arm_controller as ac # Arm, larm, rarm
 ac.arm_controller_init()
 
