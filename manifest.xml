@@ -1,0 +1,16 @@
+<package>
+  <description brief="richfox">
+
+     richfox
+
+  </description>
+  <author>Amol M Bhave8576002252</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/richfox</url>
+  <depend package="rospy"/>
+  <depend package="std_msgs"/>
+
+</package>
+
+
