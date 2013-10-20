@@ -96,7 +96,7 @@ class Arm:
                                        char+'_wrist_roll_joint']
         point = JointTrajectoryPoint()
         point.positions = angles
-        point.time_from_start = rospy.Duration(0.5)
+        point.time_from_start = rospy.Duration(1)
         goal.trajectory.points.append(point)
         self.jta.send_goal_and_wait(goal)
 
