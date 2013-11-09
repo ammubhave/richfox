@@ -84,7 +84,7 @@ class Arm:
         self.jta.wait_for_server()
         rospy.loginfo('Found joint trajectory action!')
 
-    def movej(self, angles):
+    def movej(self, angles, t=1):
         goal = JointTrajectoryGoal()
         char = self.name[0] #either 'r' or 'l'
         goal.trajectory.joint_names = [char+'_shoulder_pan_joint',
@@ -96,19 +96,20 @@ class Arm:
                                        char+'_wrist_roll_joint']
         point = JointTrajectoryPoint()
         point.positions = angles
-        point.time_from_start = rospy.Duration(0.5)
+        point.time_from_start = rospy.Duration(t)
         goal.trajectory.points.append(point)
         self.jta.send_goal_and_wait(goal)
 
-    def movec(self, pos, ori=(0,0,0,1)):
+    def movec(self, pos, ori=(0,0,0,1), t=1):
+	
         p = ik(pos, ori)
         if len(p) > 0:
-            self.movej(p)
+            self.movej(p,t)
         else:
             print 'No solution!', (pos, ori)
 
-    def move(self, pos, ori=(0,0,0,1)):
-        self.movec(pos, ori)
+    def move(self, pos, ori=(0,0,0,1), t=1):
+        self.movec(pos, ori, t)
 
 larm, left_arm, rarm, right_arm = None, None, None, None
 def arm_controller_init():   

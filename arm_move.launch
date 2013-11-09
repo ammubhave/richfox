@@ -13,5 +13,10 @@
  
  <include file="$(find pr2_arm_navigation_kinematics)/launch/left_arm_collision_free_ik.launch"/>
  <include file="$(find pr2_arm_navigation_kinematics)/launch/right_arm_collision_free_ik.launch"/>
+
+ <include file="$(find pr2_object_manipulationi_launch)/launch/pr2_manipulation.launch">
+  <arm name="use_left_arm" value="true" />
+  <arm name="use_right_arm" value="true" />
+ </include>
  
  </launch>
