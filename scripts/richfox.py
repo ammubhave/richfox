@@ -2,7 +2,7 @@
 
 
 import roslib, rospy, sys, os
-#roslib.load_manifest('cv_bridge')
+roslib.load_manifest('tf')
 os.environ['ROS_MASTER_URI'] = 'http://pr2mm1:11311'
 os.environ['ROBOT'] = 'pr2'
 
@@ -11,6 +11,16 @@ rospy.init_node('richfox')
 
 import arm_controller as ac # Arm, larm, rarm
 ac.arm_controller_init()
+
+import pr2_controllers_msgs.msg as msg
+import actionlib as al
+goal = msg.SingleJointPositionGoal(position=0.2,
+min_duration=rospy.Duration(2),
+max_velocity=1)
+name = 'torso_controller/position_joint_action'
+_ac = al.SimpleActionClient(name,msg.SingleJointPositionAction)
+_ac.wait_for_server()
+_ac.send_goal_and_wait(goal)
 
 #roslib.load_manifest('python_msg_conversions')
 #import numpy as np
@@ -39,7 +49,7 @@ ac.arm_controller_init()
 ##            pv = cloud_arr[300+i*2,j*math.floor(480/237.)][2]
 ##    #sys.stdout.write( str(cloud_arr[0,1][3]) )
 ##    sys.stdout.flush()
-##
+##quaternion0
 ##    
 ##    cv2.imshow('sen',arr)
 ##    
@@ -51,32 +61,53 @@ ac.arm_controller_init()
 
 
 #rospy.spin()
+
 #cv.DestroyAllWindows()
 
 
 from getch import getch
+from tf import transformations
+import math
 
-<<<<<<< HEAD
-point = [ 0.53 , -0.288 , -0.050 ]
+###<<<<<<< HEAD
+#point = [ 0.53 , -0.288 , -0.050 ]
 #for y in range(-28, 11):
 # ac.rarm.move((0.53, y/100., -0.0540))
 #	ac.rarm.move((0.6, -0.288, 0.26),ori, 1) DEFAULT
+#ori = [0.5,0.5,-0.5,0.5]
 
-def move_object((x,y,z)):
-	x = 0.72
-	y = -0.288
-	z = 0.15
+pi = [ 0.7 , -0.4 , -0.050 ]
+pf = [ 0.5 , -0.1 , -0.050 ]
+#pf = [0.7, -0.4, 0.26]
 
-	ori = (-0.5, 0.5, 0.5, 0.5)
+#roslib.load_manifest('sushi_tutorials')
+
+
+
+downori = transformations.quaternion_about_axis(math.pi/2, (0, 1, 0))
+
+angle = math.atan2(pf[1] - pi[1], pf[0] - pi[0])
+ori = transformations.quaternion_multiply(transformations.quaternion_about_axis(angle, (0,0,1)), downori)
+
+
+def move_object((x1,y1,z1), (x2,y2,z2)):
+#	x = 0.72#
+#	y = -0.288
+#	z = 0.15
+
+	angle = math.atan2(y2-y1, x2-x1)
+        ori = transformations.quaternion_multiply(transformations.quaternion_about_axis(angle, (0,0,1)), downori)
+	
 	ac.rarm.move((0.6, -0.288, 0.26),ori, 1)
-	ac.rarm.move((x, y, 0.26), ori, 1)
+	ac.rarm.move((x1, y1, 0.26), ori, 1)
 
-	ac.rarm.move((x,y,z), ori, 1)
-	ac.rarm.move((x, 0.11, z), ori, 1)
-	ac.rarm.move((x, 0.11, 0.26), ori, 5)
-	#ac.rarm.move((0.6, 11/100., 0.26), ori, 1)
-	#ac.rarm.move((0.72, -0.288, 0.26), ori, 1)
+	ac.rarm.move((x1,y1,z1), ori, 1)
+	ac.rarm.move((x2, y2, z2), ori, 5)
+	ac.rarm.move((x2, y2, 0.26), ori, 1)
+	
 	ac.rarm.move((0.6, -0.288, 0.26),ori, 1)
+
+move_object(pi, pf)
 
 #points = [ ] # LIST OF POINTS
 #for point in points:
@@ -104,7 +135,7 @@ def move_object((x,y,z)):
 #  c = getch()
 
 ##ac.rarm.move([0.53, -0.288, 0.3])
-=======
+###=======
 zs = -0.34000000000000002
 xs = 0.62000000000000011
 yi = -0.288
@@ -122,10 +153,10 @@ yi = -0.288
 ##
 ##ac.rarm.move( [0.5, -0.28799999999999998, 0.0] )
 
-point = [0.5, 0.0, 0.0]
-ori = [0.5,0.5,-0.5,0.5] 
+#point = [0.5, 0.0, 0.0]
+#ori = [0.5,0.5,-0.5,0.5] 
 
-ac.rarm.move( point , ori )
+#ac.rarm.move( point , ori )
 ##c = '.'
 ##while c != 'x':
 ##  c = getch()
@@ -169,4 +200,4 @@ ac.rarm.move( point , ori )
 ##  c = getch()
 ##
 ##print np
->>>>>>> 86beb0377a52bae460ed18299d425dfac2453eb7
+##>>>>>>> 86beb0377a52bae460ed18299d425dfac2453eb7
