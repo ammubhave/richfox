@@ -3,24 +3,34 @@
 
 import roslib, rospy, sys, os
 roslib.load_manifest('tf')
+roslib.load_manifest('fingertip_pressure')
 os.environ['ROS_MASTER_URI'] = 'http://pr2mm1:11311'
 os.environ['ROBOT'] = 'pr2'
 
 rospy.init_node('richfox')
-#from sensor_msgs.msg import PointCloud2, Image
+
+from pr2_msgs.msg import PressureState
 
 import arm_controller as ac # Arm, larm, rarm
 ac.arm_controller_init()
 
 import pr2_controllers_msgs.msg as msg
-import actionlib as al
-goal = msg.SingleJointPositionGoal(position=0.2,
-min_duration=rospy.Duration(2),
-max_velocity=1)
-name = 'torso_controller/position_joint_action'
-_ac = al.SimpleActionClient(name,msg.SingleJointPositionAction)
-_ac.wait_for_server()
-_ac.send_goal_and_wait(goal)
+def move_torso(pos):
+        
+        import actionlib as al
+        goal = msg.SingleJointPositionGoal(position=pos,
+        min_duration=rospy.Duration(2),
+        max_velocity=1)
+        name = 'torso_controller/position_joint_action'
+        _ac = al.SimpleActionClient(name,msg.SingleJointPositionAction)
+        _ac.wait_for_server()
+        _ac.send_goal_and_wait(goal)
+move_torso(0.2)
+
+
+
+#rospy.spin()
+
 
 #roslib.load_manifest('python_msg_conversions')
 #import numpy as np
@@ -76,26 +86,55 @@ import math
 #	ac.rarm.move((0.6, -0.288, 0.26),ori, 1) DEFAULT
 #ori = [0.5,0.5,-0.5,0.5]
 
-pi = [ 0.7 , -0.4 , -0.050 ]
-pf = [ 0.5 , -0.1 , -0.050 ]
+
 #pf = [0.7, -0.4, 0.26]
 
 #roslib.load_manifest('sushi_tutorials')
 
 
-
+pi = [ 0.7 , -0.4 , 0.26 ]
+pf = [ 0.5 , -0.1 , 0.26 ]
 downori = transformations.quaternion_about_axis(math.pi/2, (0, 1, 0))
 
 angle = math.atan2(pf[1] - pi[1], pf[0] - pi[0])
 ori = transformations.quaternion_multiply(transformations.quaternion_about_axis(angle, (0,0,1)), downori)
 
+has_collided = False
+lz = 0.26
+ac.rarm.move((0.6,-0.288,lz), ori, 2)
+def find_table():
+        global has_collided, lz
+        def pressure_message_callback(message):
+             global has_collided
+             #print message.r_finger_tip[3], has_collided
+             if message.r_finger_tip[3] > 3000:
+                     has_collided = True
+        rospy.Subscriber('pressure/r_gripper_motor', PressureState, pressure_message_callback)
+        
+        while has_collided == False:         
+                ac.rarm.move((0.6,-0.288,lz), ori, 0.1)
+                rospy.sleep(0.1)
+                lz -= 0.003
+        
+        #(1330, 4007, 1660, 1985, 1921, 1790, 4742, 2074, 1934, 2004, 1723, 1983, 1944, 1870, 2172, 1911, 2028, 2205, 1792, 1857, 2481, 1462)
+        #(1051, 3986, 1271, 5940, 2716, 1770, 4768, 2248, 2286, 2438, 1748, 1988, 1987, 1871, 2176, 1941, 2023, 2201, 1814, 1856, 2481, 1474)
+
+find_table()
+print "TABLE Z: ", lz
+lz += 0.05
+ac.rarm.move((0.6,-0.288,lz), ori, 1)
+#rospy.spin()
+
+
+pi = [ 0.7 , -0.4 , lz ]
+pf = [ 0.5 , -0.1 , lz ]
+downori = transformations.quaternion_about_axis(math.pi/2, (0, 1, 0))
+angle = math.atan2(pf[1] - pi[1], pf[0] - pi[0])
+ori = transformations.quaternion_multiply(transformations.quaternion_about_axis(angle, (0,0,1)), downori)
+
 
 def move_object((x1,y1,z1), (x2,y2,z2)):
-#	x = 0.72#
-#	y = -0.288
-#	z = 0.15
-
-	angle = math.atan2(y2-y1, x2-x1)
+        angle = math.atan2(y2-y1, x2-x1)
         ori = transformations.quaternion_multiply(transformations.quaternion_about_axis(angle, (0,0,1)), downori)
 	
 	ac.rarm.move((0.6, -0.288, 0.26),ori, 1)
@@ -120,7 +159,9 @@ move_object(pi, pf)
 #  if c == 'w':
 #    point[2] += 0.01
 #  elif c == 's':
-#    point[2] -= 0.01
+#    point[2] -= 0.01downori = transformations.quaternion_about_axis(math.pi/2, (0, 1, 0))
+
+
 #  elif c == 'a':
 #    point[1] -= 0.01
 #  elif c == 'd':
@@ -135,7 +176,8 @@ move_object(pi, pf)
 #  c = getch()
 
 ##ac.rarm.move([0.53, -0.288, 0.3])
-###=======
+###=======downori = transformations.quaternion_about_axis(math.pi/2, (0, 1, 0))
+
 zs = -0.34000000000000002
 xs = 0.62000000000000011
 yi = -0.288
