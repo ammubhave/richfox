@@ -100,6 +100,10 @@ class Arm:
         goal.trajectory.points.append(point)
         self.jta.send_goal_and_wait(goal)
 
+
+	#if type(angles) is not list:
+	#	angles = [angles]
+
     def movec(self, pos, ori=(0,0,0,1), t=1):
 	
         p = ik(pos, ori)

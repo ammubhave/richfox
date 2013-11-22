@@ -41,7 +41,6 @@ def centroid_callback(message):
 rospy.Subscriber('centroid', Point, centroid_callback)
 
 
-
 #roslib.load_manifest('python_msg_conversions')#!/usr/bin/python
 
 
@@ -115,7 +114,7 @@ def centroid_callback(message):
                 ac.rarm.move((message.x,message.y,0.1), (0,0,0,1), 0.2)
 rospy.Subscriber('centroid', Point, centroid_callback)
 
-
+ 
 
 #roslib.load_manifest('python_msg_conversions')#!/usr/bin/python
 
@@ -227,6 +226,7 @@ rospy.Subscriber('centroid2', Point, centroid_callback2)
 #cv.DestroyAllWindows()
 
 
+
 from getch import getch
 from tf import transformations
 import math
@@ -293,37 +293,39 @@ print "TABLE Z: ", lz
 lz += 0.02
 ac.rarm.move((0.6,-0.288,lz), ori, 0.1)
 
-print "Press Enter to Find Object (x to exit)..."
-choice = raw_input()
-while choice.strip() != 'x':
-        flag_move_to_object = True
-        flag_move_index = 1
-        print "Press Enter when object 1 is found and to move it"
-        raw_input()
-        
-        flag_move_index = 2
-        print "Press Enter when object 2 is found and to move it"
-        raw_input()
-        
-        flag_move_index = 0
-        flag_move_to_object = False
-        
-        lx += 0.09
-        lx2 += 0.07
-        print lx, ly, lz
-        print lx2, ly2, lz
-        print '#################################'
-        raw_input()
-        move_object((lx, ly+0.1, lz), (lx, ly-0.2, lz))
-        print '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'
-        move_object((lx2, ly2+0.1, lz), (lx2, ly2-0.2, lz))
-        
-        print "Press Enter to Find Object (x to exit)..."
-        choice = raw_input()
+##print "Press Enter to Find Object (x to exit)..."
+##choice = raw_input()
+##while choice.strip() != 'x':
+##        flag_move_to_object = True
+##        flag_move_index = 1
+##        print "Press Enter when object 1 is found and to move it"
+##        raw_input()
+##        
+##        flag_move_index = 2
+##        print "Press Enter when object 2 is found and to move it"
+##        raw_input()
+##        
+##        flag_move_index = 0
+##        flag_move_to_object = False
+##        
+##        lx += 0.09
+##        lx2 += 0.07
+##        print lx, ly, lz
+##        print lx2, ly2, lz
+##        print '#################################'
+##        raw_input()
+##        move_object((lx, ly+0.1, lz), (lx, ly-0.2, lz))
+##        print '$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$'
+##        move_object((lx2, ly2+0.1, lz), (lx2, ly2-0.2, lz))
+##        
+##        print "Press Enter to Find Object (x to exit)..."
+##        choice = raw_input()
 
-
-ac.rarm.move((0.6, -0.288, 0.26),ori, 3)
-
+#ac.rarm.move((0.6,-0.288,lz), ori, 1)
+ac.rarm.move((0.6,0.2,lz), ori, 1)
+raw_input()
+ac.rarm.move((0.6,-0.4,lz), ori, 5)
+                
 rospy.spin()
 
 
