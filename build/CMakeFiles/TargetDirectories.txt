@@ -1,0 +1,16 @@
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/ROSBUILD_genmsg_cpp.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/ROSBUILD_genmsg_lisp.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/ROSBUILD_gensrv_cpp.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/ROSBUILD_gensrv_lisp.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/clean-test-results.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/richfox.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/rosbuild_precompile.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/rosbuild_premsgsrvgen.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/rospack_genmsg.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/rospack_genmsg_libexe.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/rospack_gensrv.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/test.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/test-future.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/test-results.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/test-results-run.dir
+/afs/athena.mit.edu/user/a/m/ambhave/myws/sandbox/richfox/build/CMakeFiles/tests.dir
