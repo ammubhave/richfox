@@ -50,10 +50,10 @@ class Richfox:
         #print message
         
         if self.flag_move_to_object:
-                self.lx = message.x
-                self.ly = message.y
-                self.flag_object_found = True
-                # ac.rarm.move((message.x,message.y,0.1), (0,0,0,1), 0.7)
+            self.lx = message.x
+            self.ly = message.y
+            self.flag_object_found = True
+            # ac.rarm.move((message.x,message.y,0.1), (0,0,0,1), 0.7)
 
 
     def centroid_callback2(self, message):
@@ -100,6 +100,11 @@ class Richfox:
         ac.rarm.move((x1,y1,z1), ori, 2)
         ac.rarm.move((x2, y2, z2), ori, 5)
         ac.rarm.move((x2, y2, 0.1), ori, 2)
+
+    def find_objects(self):
+        while (not self.flag_object_found or not self.flag_object2_found): pass
+        print 'object 1 at ', self.lx, self.ly
+        print 'object 2 at ', self.lx2, self.ly2
 
     def find_and_move_objects(self):
         ''' Automates finding and moving object '''

@@ -2,25 +2,51 @@
 
 Richfox!
 
-Control code for PR2 robot.
+Control code for PR2 robot
 
-Goal: To push objects, uses basic vision code
+Goal: To detect and push objects using basic vision code
 
 ##Initialize 
-Load and set up important things
-
-    import roslib, rospy, sys, os
-    os.environ['ROS_MASTER_URI'] = 'http://pr2mm1:11311'
-    os.environ['ROBOT'] = 'pr2'
-    rospy.init_node('richfox')
+Initialize a instance of Richfox class
     
-    roslib.load_manifest('tf')
-    roslib.load_manifest('fingertip_pressure')
-##Move Arm
-Using inverse kinemetic and joint trajectory to move an arm to a specific position
+    richfox = Richfox()
+    
+##Move Torso
+Move torso to the given position
+    
+    richfox.move_torso(position, min_duration=2, max_velocity=1)
+
+##Find Table
+Finds table by moving finger tip from top to bottom and sensing when it touches. The position of the table will be stored in self.lz
+
+    richfox.find_table()
+    print richfox.lz
+
+##Move Object
+Moves arm from the original position to final position
+    
+    start = (s1, s2, s3)
+    final = (f1, f2, f3)
+    richfox.move_object(start, final)
+
+##Find Objects
+Print the positions of objects
+
+    richfox.find_objects()
+    
+##Find and Move Object
+Example of code to find and move an object.
+
+    richfox.find_and_move_objects()
+
+##Manually Move Arms
+Move arm to a specific calestial coordinates or joint coordinates
+
+Initialize variable
 
     import arm_controller as ac         #import arm_controller module
     ac.arm_controller_init()            #initialize left/right arms variable in the module
+
 Move right arm
 
     # specify joint coordinates
@@ -68,51 +94,3 @@ Pause the input stream with getch
 
     from getch import getch
     getch()
-##Find Objects
-Needs to be cleaned up
-
-    from geometry_msgs.msg import Point
-    lx = ly = lx2 = ly2 = 0
-    flag_move_to_object = False
-    flag_move_index = 0
-    flag_object_found = flag_object2_found = False
-    
-    def centroid_callback(message):
-            ''' Callback function for tracking of first object, topic published: centroid '''
-            
-            global flag_move_to_object
-            global flag_move_index
-            global flag_object_found
-            global lx
-            global ly
-            print message
-            
-            if flag_move_to_object:
-                    lx = message.x
-                    ly = message.y
-                    flag_object_found = True
-                    if flag_move_index == 1:
-                            print 1
-                            #ac.rarm.move((message.x,message.y,0.1), (0,0,0,1), 0.7)
-    
-    
-    def centroid_callback2(message):
-            ''' Callback function for tracking of first object, topic published: centroid '''
-            
-            global flag_move_to_object
-            global flag_move_index
-            global flag_object2_found
-            global lx2
-            global ly2
-            print message
-            
-            if flag_move_to_object:
-                    lx2 = message.x
-                    ly2 = message.y
-                    flag_object2_found = True
-                    if flag_move_index == 2:
-                            print 2
-                            #ac.rarm.move((message.x,message.y,0.1), (0,0,0,1), 0.7)
-
-    rospy.Subscriber('centroid', Point, centroid_callback)
-    rospy.Subscriber('centroid2', Point, centroid_callback2)
